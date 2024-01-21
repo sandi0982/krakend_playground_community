@@ -3,13 +3,15 @@ services:
   krakend_ce:
     # The :watch image restarts the service automatically when the configuration files change.
     # Do not use this image in production, it's meant to speed up your testing and development.
-    image: devopsfaith/krakend:watch
+    # image: devopsfaith/krakend:watch
+    image: devopsfaith/krakend:2.5.0-dhontecillas
     volumes:
       - ./config/krakend:/etc/krakend
     ports:
       - "1234:1234"
       - "8080:8080"
       - "8090:8090"
+      - "9090:9090"
     command: ["run", "-d", "-c", "/etc/krakend/krakend.json"]
     depends_on:
       - fake_api
@@ -32,11 +34,18 @@ services:
       - "INFLUXDB_ADMIN_PASSWORD=supersecretpassword"
     ports:
       - "8086:8086"
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "59090:9090"
+    volumes:
+      - "./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
   jaeger:
     image: jaegertracing/all-in-one:1
     ports:
       - "16686:16686"
       - "14268:14268"
+      - "4317:4317"
   elasticsearch:
     image: elasticsearch:8.4.1
     environment:
@@ -44,6 +53,7 @@ services:
       - "xpack.security.enabled=false"
       - "xpack.security.transport.ssl.enabled=false"
       - "xpack.security.http.ssl.enabled=false"
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx2024m"
     ports:
       - "19200:9200"
       - "9300:9300"
@@ -66,7 +76,7 @@ services:
     ports:
       - "15672:15672"
   fake_api:
-    image: ghcr.io/lpereira/lwan:latest
+    image: ghcr.io/lpereira/lwan:master
     volumes:
       - ./data:/wwwroot
     ports:
