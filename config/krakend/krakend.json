@@ -461,10 +461,10 @@
                 }
             },
             {
-                "name": "local_jaeger",
+                "name": "local_tempo",
                 "kind": "opentelemetry",
                 "config": {
-                    "host": "jaeger",
+                    "host": "tempo",
                     "port": 4317,
                     "use_http": false
                 }
@@ -476,7 +476,7 @@
             ],
             "metric_reporting_period": 1,
             "trace_providers": [
-                "local_jaeger"
+                "local_tempo"
             ],
             "trace_sample_rate": 1
         },
