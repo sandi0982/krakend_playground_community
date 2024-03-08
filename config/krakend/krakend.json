@@ -429,7 +429,15 @@
                     "name": "local_tempo",
                     "host": "tempo",
                     "port": 4317,
-                    "use_http": false
+                    "use_http": false,
+                    "disable_metrics": true
+                },
+                {
+                    "name": "local_jaeger",
+                    "host": "jaeger",
+                    "port": 4317,
+                    "use_http": false,
+                    "disable_metrics": true
                 }
             ]
         },
@@ -437,11 +445,13 @@
             "global": {
                 "disable_metrics": false,
                 "disable_traces": false,
-                "disable_propagation": false
+                "disable_propagation": false,
+                "report_headers": true
             },
-            "pipe": {
+            "proxy": {
                 "disable_metrics": false,
-                "disable_traces": false
+                "disable_traces": false,
+                "report_headers": true
             }, 
             "backend": {
                 "metrics": {
@@ -466,7 +476,8 @@
                             "key": "my_trace_attr",
                             "value": "my_trace_val" 
                         }
-                    ]
+                    ],
+                    "report_headers": true
                 }
             }
         }

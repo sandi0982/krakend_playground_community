@@ -20,7 +20,7 @@ services:
       - fake_api
       - jaeger
   grafana:
-    image: grafana/grafana:9.1.2
+    image: grafana/grafana:latest
     ports:
       - "4000:3000"
     volumes:
@@ -50,6 +50,13 @@ services:
       - "16686:16686"
       - "14268:14268"
       - "4317:4317"
+  loki:
+    image: grafana/loki:latest
+    domainname: loki
+    healthcheck:
+      test: [CMD, wget, --spicer, -S, http://localhost:3100/ready]
+    ports:
+      - "53100:3100"
   tempo:
     image: grafana/tempo:latest
     domainname: tempo
